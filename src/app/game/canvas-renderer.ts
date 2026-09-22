@@ -19,11 +19,12 @@ export class CanvasRenderer {
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d', { alpha: false })!;
+    this.ctx = (canvas.getContext ? canvas.getContext('2d', { alpha: false }) : null) as CanvasRenderingContext2D;
   }
 
   public render(engine: GameEngine) {
     const ctx = this.ctx;
+    if (!ctx) return;
     const width = this.canvas.width;
     const height = this.canvas.height;
 

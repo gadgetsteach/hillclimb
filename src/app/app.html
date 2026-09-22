@@ -34,6 +34,9 @@
 
     <!-- Actions Right -->
     <div class="hud-group right">
+      <button class="icon-btn help-btn" (click)="openHelp()" title="How to Play / Controls (H)">
+        ❓
+      </button>
       <button class="icon-btn" (click)="toggleSound()" [title]="gameState.soundEnabled() ? 'Mute' : 'Unmute'">
         {{ gameState.soundEnabled() ? '🔊' : '🔇' }}
       </button>
@@ -58,6 +61,17 @@
   <!-- Airborne Indicator -->
   @if (isAirborne() && !activeStunt()) {
     <div class="air-badge">AIRBORNE 🚀</div>
+  }
+
+  <!-- Tutorial Hint Banner at Start of Run -->
+  @if (showTutorialBanner() && !isGameOver() && !isPaused()) {
+    <div class="tutorial-banner">
+      <div class="banner-content">
+        <span class="banner-icon">💡</span>
+        <span class="banner-msg"><strong>CONTROLS:</strong> Hold <strong>[GAS]</strong> / <strong>[D]</strong> to climb • <strong>[BRAKE]</strong> / <strong>[A]</strong> to tilt back • Click <strong>[❓]</strong> for full hints</span>
+      </div>
+      <button class="banner-close" (click)="dismissTutorial()" title="Dismiss">✕</button>
+    </div>
   }
 
   <!-- 4. Bottom Control Bar (Cockpit Gauges & Ergonomic Pedals) -->

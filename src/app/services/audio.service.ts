@@ -14,12 +14,16 @@ export class AudioService {
   constructor() {}
 
   private initContext() {
-    if (!this.ctx) {
-      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      this.ctx = new AudioContextClass();
-    }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    if (this.ctx) return;
+    if (typeof window === 'undefined') return;
+
+    try {
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (typeof AudioContextClass === 'function') {
+        this.ctx = new AudioContextClass();
+      }
+    } catch (e) {
+      console.warn('AudioContext not supported in this environment:', e);
     }
   }
 

@@ -41,6 +41,8 @@ export class App implements OnInit, OnDestroy {
   readonly isGameOver = signal<boolean>(false);
   readonly gameOverReason = signal<'crashed' | 'fuel' | ''>('');
   readonly isGarageOpen = signal<boolean>(false);
+  readonly isHelpOpen = signal<boolean>(false);
+  readonly showTutorialBanner = signal<boolean>(true);
 
   readonly distance = signal<number>(0);
   readonly speed = signal<number>(0);
@@ -184,6 +186,12 @@ export class App implements OnInit, OnDestroy {
       this.togglePause();
     } else if (event.key === 'r' || event.key === 'R') {
       this.restartGame();
+    } else if (event.key === 'h' || event.key === 'H' || event.key === '?') {
+      if (this.isHelpOpen()) {
+        this.closeHelp();
+      } else {
+        this.openHelp();
+      }
     }
   }
 
@@ -198,6 +206,9 @@ export class App implements OnInit, OnDestroy {
 
   pressGas() {
     if (this.isGameOver() || this.isPaused()) return;
+    if (this.showTutorialBanner()) {
+      this.showTutorialBanner.set(false);
+    }
     this.engine.isGas = true;
     this.gasActive.set(true);
   }
@@ -236,6 +247,26 @@ export class App implements OnInit, OnDestroy {
     if (enabled && !this.isGameOver() && !this.isPaused()) {
       this.audio.startEngine();
     }
+  }
+
+  openHelp() {
+    this.audio.playClickSound();
+    this.isHelpOpen.set(true);
+    if (!this.isPaused()) {
+      this.isPaused.set(true);
+      this.audio.stopEngine();
+    }
+  }
+
+  closeHelp() {
+    this.audio.playClickSound();
+    this.isHelpOpen.set(false);
+    this.isPaused.set(false);
+    this.audio.startEngine();
+  }
+
+  dismissTutorial() {
+    this.showTutorialBanner.set(false);
   }
 
   openGarage() {
@@ -282,6 +313,9 @@ export class App implements OnInit, OnDestroy {
     this.isGameOver.set(false);
     this.gameOverReason.set('');
     this.isPaused.set(false);
+    this.distance.set(0);
+    this.speed.set(0);
+    this.fuel.set(100);
     this.activeStunt.set(null);
     this.gameState.resetSession();
 
