@@ -828,6 +828,251 @@
   margin-top: 20px;
 }
 
+/* 8. Tutorial Hint Banner */
+.tutorial-banner {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(22, 27, 34, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+  border-radius: 30px;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(88, 166, 255, 0.25);
+  z-index: 25;
+  animation: float-hint 2s infinite ease-in-out alternate;
+  pointer-events: auto;
+}
+
+@keyframes float-hint {
+  from { transform: translateX(-50%) translateY(0); }
+  to { transform: translateX(-50%) translateY(-5px); }
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.banner-icon {
+  font-size: 1.25rem;
+}
+
+.banner-msg {
+  font-size: 0.85rem;
+  color: #e6edf3;
+  letter-spacing: 0.3px;
+}
+
+.banner-msg strong {
+  color: #58a6ff;
+}
+
+.banner-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #8b949e;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.banner-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* 9. Help Modal */
+.help-card {
+  max-width: 760px;
+  padding: 28px 32px;
+}
+
+.help-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.close-x-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8b949e;
+  font-size: 1.1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.close-x-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.help-content-scroll {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.help-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-heading {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: #58a6ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.controls-guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.control-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-card.gas-card {
+  border-color: rgba(46, 204, 113, 0.3);
+}
+
+.control-card.brake-card {
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.control-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-badge {
+  display: inline-block;
+  font-family: 'Teko', sans-serif;
+  font-size: 1.3rem;
+  line-height: 1;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.gas-badge {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.brake-badge {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.misc-badge {
+  background: rgba(88, 166, 255, 0.2);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.4);
+}
+
+.control-keys {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #f1c40f;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.control-role {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #8b949e;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-role strong {
+  color: #e6edf3;
+}
+
+/* Tips Grid */
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tip-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tip-icon {
+  font-size: 1.4rem;
+}
+
+.tip-details strong {
+  font-size: 0.85rem;
+  color: #f0f6fc;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tip-details p {
+  font-size: 0.76rem;
+  color: #8b949e;
+  line-height: 1.35;
+}
+
+.help-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .pedal-btn {
@@ -852,6 +1097,12 @@
     width: 140px;
   }
   .best-tag {
+    display: none;
+  }
+  .controls-guide-grid, .tips-grid {
+    grid-template-columns: 1fr;
+  }
+  .tutorial-banner {
     display: none;
   }
 }

@@ -246,7 +246,7 @@
   }
 
   <!-- 7. Pause Screen Modal -->
-  @if (isPaused() && !isGarageOpen() && !isGameOver()) {
+  @if (isPaused() && !isGarageOpen() && !isGameOver() && !isHelpOpen()) {
     <div class="modal-backdrop">
       <div class="modal-card pause-card">
         <h2 class="modal-title">GAME PAUSED</h2>
@@ -254,11 +254,118 @@
           <button class="primary-btn" (click)="togglePause()">
             ▶️ RESUME
           </button>
+          <button class="secondary-btn" (click)="openHelp()">
+            ❓ HOW TO PLAY & HINTS
+          </button>
           <button class="secondary-btn" (click)="restartGame()">
             🔄 RESTART RUN
           </button>
           <button class="secondary-btn" (click)="openGarage()">
             🔧 GARAGE
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- 8. How To Play & Controls Guide Modal -->
+  @if (isHelpOpen()) {
+    <div class="modal-backdrop">
+      <div class="modal-card help-card">
+        <div class="help-header">
+          <div>
+            <h2 class="modal-title">HOW TO PLAY & HINTS</h2>
+            <p class="modal-desc">Master the physics and mechanics to climb the highest hills!</p>
+          </div>
+          <button class="close-x-btn" (click)="closeHelp()" title="Close">✕</button>
+        </div>
+
+        <div class="help-content-scroll">
+          <!-- Button & Controls Section -->
+          <div class="help-section">
+            <h3 class="section-heading">🎮 CONTROLS & BUTTONS</h3>
+            <div class="controls-guide-grid">
+              <!-- Gas Guide -->
+              <div class="control-card gas-card">
+                <div class="control-card-header">
+                  <span class="control-badge gas-badge">GAS / ACCEL</span>
+                  <span class="control-keys">D • ➔ • W • ⬆</span>
+                </div>
+                <div class="control-role">
+                  <p><strong>On Ground:</strong> Powers the wheels clockwise to accelerate forward and climb hills.</p>
+                  <p><strong>In Air:</strong> Tilts car nose-DOWN (pitch forward). Rotate 360° for a <strong>FRONTFLIP (+500🪙)</strong>!</p>
+                </div>
+              </div>
+
+              <!-- Brake Guide -->
+              <div class="control-card brake-card">
+                <div class="control-card-header">
+                  <span class="control-badge brake-badge">BRAKE / REVERSE</span>
+                  <span class="control-keys">A • ⬅ • S • ⬇ • Space</span>
+                </div>
+                <div class="control-role">
+                  <p><strong>On Ground:</strong> Brakes wheels and shifts into reverse gear.</p>
+                  <p><strong>In Air:</strong> Tilts car nose-UP (pitch backward). Rotate 360° for a <strong>BACKFLIP (+500🪙)</strong>!</p>
+                </div>
+              </div>
+
+              <!-- Shortcuts Guide -->
+              <div class="control-card shortcut-card">
+                <div class="control-card-header">
+                  <span class="control-badge misc-badge">SHORTCUTS</span>
+                  <span class="control-keys">[P] [R] [H]</span>
+                </div>
+                <div class="control-role">
+                  <p><strong>[P]:</strong> Pause / Unpause the game loop instantly.</p>
+                  <p><strong>[R]:</strong> Fast Restart the run from 0m.</p>
+                  <p><strong>[H] or [?]:</strong> Open / Close this Controls & Hints Guide.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gameplay Rules & Pro Tips -->
+          <div class="help-section">
+            <h3 class="section-heading">💡 PRO DRIVING TIPS & SURVIVAL</h3>
+            <div class="tips-grid">
+              <div class="tip-box">
+                <div class="tip-icon">💥</div>
+                <div class="tip-details">
+                  <strong>Driver Protection (Crash Rule)</strong>
+                  <p>Keep your driver upright! If the driver's head touches the terrain, you crash immediately.</p>
+                </div>
+              </div>
+
+              <div class="tip-box">
+                <div class="tip-icon">⛽</div>
+                <div class="tip-details">
+                  <strong>Fuel Conservation</strong>
+                  <p>Fuel constantly drains, faster when holding Gas. Collect red canisters (+45% fuel) to prevent engine cutoff.</p>
+                </div>
+              </div>
+
+              <div class="tip-box">
+                <div class="tip-icon">🔄</div>
+                <div class="tip-details">
+                  <strong>Air Time & Stunt Bonuses</strong>
+                  <p>Launch off hill crests! Complete 360° air flips for +500 bonus coins, and earn extra for high hang-time.</p>
+                </div>
+              </div>
+
+              <div class="tip-box">
+                <div class="tip-icon">🔧</div>
+                <div class="tip-details">
+                  <strong>Garage Upgrades</strong>
+                  <p>Spend coins in the Garage: <strong>Engine</strong> for hill torque, <strong>Suspension</strong> for damping, <strong>Tires</strong> for grip, and <strong>4WD</strong> to climb vertical slopes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-footer">
+          <button class="primary-btn" (click)="closeHelp()">
+            🏎️ READY TO RACE!
           </button>
         </div>
       </div>
