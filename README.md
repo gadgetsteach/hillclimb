@@ -418,7 +418,7 @@ docker run -d -p 8080:80 --name hillclimb hillclimb-game
 Access the game at `http://localhost:8080`.
 
 ---
-I a building this game using this ai prompt: Building a high-performance, physics-driven web game in Angular requires strict separation of concerns. If you try to bind physics calculations directly to Angular's UI templates, the framework's change detection cycle will throttle your frame rate, and the game will stutter.
+I am building this game using this ai prompt: Building a high-performance, physics-driven web game in Angular requires strict separation of concerns. If you try to bind physics calculations directly to Angular's UI templates, the framework's change detection cycle will throttle your frame rate, and the game will stutter.
 
 Here is the technical blueprint, architectural strategy, and asset generation pipeline for building a purely local, browser-based physics climber.
 
