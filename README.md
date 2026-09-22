@@ -418,6 +418,102 @@ docker run -d -p 8080:80 --name hillclimb hillclimb-game
 Access the game at `http://localhost:8080`.
 
 ---
+I a building this game using this ai prompt: Building a high-performance, physics-driven web game in Angular requires strict separation of concerns. If you try to bind physics calculations directly to Angular's UI templates, the framework's change detection cycle will throttle your frame rate, and the game will stutter.
+
+Here is the technical blueprint, architectural strategy, and asset generation pipeline for building a purely local, browser-based physics climber.
+
+## 1. Technical Architecture & Tech Stack
+
+* **Framework:** Angular 17+ (using Standalone components and Signals for UI state management).
+* **Rendering:** HTML5 `<canvas>` API. Avoid DOM-based rendering for moving game objects.
+* **Physics Engine:** `Matter.js`. It is a robust, lightweight 2D rigid body physics engine perfect for browser games. It handles collisions, gravity, mass, and complex constraints.
+* **Local State:** `localStorage` or `IndexedDB`. Use this to save coin balances, high scores, and vehicle upgrade levels (engine, suspension, tires, 4WD).
+
+## 2. Vehicle Engineering (The Physics Setup)
+
+The "feel" of a hill-climbing game is entirely dictated by its vehicle physics. You are not moving a single image across a screen; you are simulating an interconnected mechanical system.
+
+A Matter.js vehicle consists of three primary rigid bodies and two constraints:
+
+1. **Chassis:** A rectangular polygon representing the car body.
+2. **Wheels:** Two circles with high friction and high density.
+3. **Suspension:** Spring constraints (specifically `Matter.Constraint`) connecting the center of each wheel to the chassis.
+
+Tuning the stiffness and damping of these springs is the hardest part of development.
+
+> **Key insight:** You want a "critically damped" suspension. If stiffness is too high with low damping, the car will violently bounce backward upon hitting a hill. If damping is too high, the suspension bottoms out, and the chassis hits the dirt, instantly halting momentum.
+
+## 3. Procedural Terrain Generation
+
+You do not hand-draw levels. The game requires endless terrain generated via algorithms.
+
+* **The Algorithm:** Use **1D Perlin Noise** or a combination of overlapping Sine Waves. This generates a sequence of smooth, rolling numerical values.
+* **The Terrain Mesh:** Translate the noise values into `(x, y)` coordinates. Feed these coordinates into `Matter.Bodies.fromVertices` to create solid, static physics boundaries that act as the ground.
+* **Chunking:** Never generate the entire map at once. Generate the terrain in "chunks" (e.g., 2000px wide). As the car moves right, generate a new chunk ahead of the camera. Once a chunk passes far off-screen to the left, destroy its physics bodies to free up memory.
+
+## 4. The Angular Game Loop
+
+To maintain a locked 60 FPS, the game loop **must** run outside Angular's `NgZone`. Only re-enter the zone when you need to update UI elements (like the score counter or the fuel gauge).
+
+```typescript
+import { Component, ElementRef, ViewChild, NgZone, OnInit } from '@angular/core';
+import Matter from 'matter-js';
+
+@Component({
+  selector: 'app-game-canvas',
+  template: `<canvas #gameCanvas width="1280" height="720"></canvas>`
+})
+export class GameCanvasComponent implements OnInit {
+  @ViewChild('gameCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+
+  constructor(private ngZone: NgZone) {}
+
+  ngOnInit() {
+    // Escape Angular's change detection for the heavy physics loop
+    this.ngZone.runOutsideAngular(() => {
+      this.initGameLoop();
+    });
+  }
+
+  initGameLoop() {
+      // 1. Initialize Matter.js Engine and World
+      // 2. Set up requestAnimationFrame for stepping the physics engine and drawing to canvas
+      // 3. Emit events back into this.ngZone.run() ONLY when the player collects a coin, upgrades, or dies.
+  }
+}
+
+```
+
+## 5. Core Game Mechanics
+
+* **Acceleration:** When the user presses the "Gas" button, apply an angular velocity force to both wheel bodies in the clockwise direction.
+* **Braking/Reverse:** Apply angular velocity in the counter-clockwise direction.
+* **Air Control (Flips):** Check for collisions between the wheels and the terrain body. If the wheels are *not* touching the ground (the car is airborne), pressing Gas or Brake should apply a rotational force (torque) directly to the **chassis body**. This allows the player to perform backflips and frontflips for bonus points.
+* **Death Conditions:** The game ends if the fuel variable reaches zero, or if a dedicated invisible "head" hitbox attached to the chassis collides with the terrain mesh (signaling a crash).
+
+---
+
+## 6. End-to-End AI Asset Prompts
+
+To generate consistent, production-ready 2D assets without an art team, use these exact prompts in Midjourney (v6), DALL-E 3, or your preferred AI image generator.
+
+**A. Parallax Backgrounds**
+(You need 3 distinct layers that scroll at different speeds to create depth.)
+
+> **Prompt:** *A 2D side-scrolling video game background, seamless looping vector art style, flat colors, clean edges. Distant silhouettes of rolling hills and pine trees against a bright dusk sky, layered atmospheric perspective. In the style of modern casual indie mobile games, 16:9 ratio, no text, no characters.*
+
+**B. The Vehicle (Chassis & Wheels)**
+(You must generate them together for style consistency, but slice them apart in Photoshop/GIMP later to attach them to the physics bodies.)
+
+> **Prompt:** *A side-view 2D illustration of a rusty, rugged off-road jeep, mobile game asset style, flat vector shading, thick bold outlines. The wheels are clearly separated from the main chassis. Cartoonish proportions with an oversized engine block and a roll cage. Isolated on a solid white background.*
+
+**C. The Driver Character (Ragdoll)**
+
+> **Prompt:** *2D character sprite, side profile, a scruffy cartoon hillbilly driver wearing a cap and goggles, sitting position with hands stretched out holding an invisible steering wheel. Vector art, flat shading, thick outlines, casual mobile game UI style, isolated on a white background.*
+
+**D. UI Elements & Collectibles**
+
+> **Prompt:** *A UI sprite sheet for a 2D mobile racing game. Includes a bright gold coin with a star icon, a red plastic gas can with a fuel drop icon, and glossy green "Upgrade" buttons. Vector illustration, shiny gradients, thick strokes, isolated on a white background.*
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
